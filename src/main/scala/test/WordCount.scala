@@ -52,7 +52,7 @@ trait Xml {
     .withCompression(Compression.GZIP)
     .withNumShards(1)
     .via(xmlioSink)
-    .to("dupa")
+    .to("output")
 
 }
 
