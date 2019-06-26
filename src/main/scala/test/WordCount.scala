@@ -9,21 +9,12 @@ import org.apache.beam.sdk.io.{Compression, FileIO}
 import scala.annotation.meta._
 import test.XmlTypes.{xmlElement, _}
 
-
-/*
-sbt "runMain [PACKAGE].WordCount
-  --project=[PROJECT] --runner=DataflowRunner --zone=[ZONE]
-  --input=gs://dataflow-samples/shakespeare/kinglear.txt
-  --output=gs://[BUCKET]/[PATH]/wordcount"
-*/
-
 object WordCount extends Xml {
   def main(cmdlineArgs: Array[String]): Unit = {
     val (sc, args) = ContextAndArgs(cmdlineArgs)
 
     val exampleData = "gs://dataflow-samples/shakespeare/kinglear.txt"
     val input = args.getOrElse("input", exampleData)
-    val output = args("output")
 
     val scol = sc.textFile(input)
       .map(_.trim)
