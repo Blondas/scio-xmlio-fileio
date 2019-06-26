@@ -17,22 +17,13 @@ sbt "runMain [PACKAGE].WordCount
   --output=gs://[BUCKET]/[PATH]/wordcount"
 */
 
-object WordCount extends {
+object WordCount extends Xml {
   def main(cmdlineArgs: Array[String]): Unit = {
     val (sc, args) = ContextAndArgs(cmdlineArgs)
 
     val exampleData = "gs://dataflow-samples/shakespeare/kinglear.txt"
     val input = args.getOrElse("input", exampleData)
     val output = args("output")
-
-    val xmlioSink: XmlIO.Sink[Dupa] = XmlIO
-      .sink(classOf[Dupa])
-      .withRootElement("words")
-
-    val flow: FileIO.Write[Void, Dupa] = FileIO
-      .write[Dupa]()
-      .via(xmlioSink)
-      .to(output)
 
     val scol = sc.textFile(input)
       .map(_.trim)
@@ -50,7 +41,8 @@ case class Dupa(@xmlValue foo: String) {
   private def this() = this("")
 }
 
-trait Test {
+
+trait Xml {
   val xmlioSink: XmlIO.Sink[Dupa] = XmlIO
     .sink(classOf[Dupa])
     .withRootElement("words")
